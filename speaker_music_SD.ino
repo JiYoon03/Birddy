@@ -29,8 +29,8 @@
 HardwareSerial SensorSerial(2);
 
 // WiFi / NTP
-const char* WIFI_SSID = "Ria";
-const char* WIFI_PASS = "12345678";
+const char* WIFI_SSID = "yourSSID";
+const char* WIFI_PASS = "yourPW";
 WiFiUDP ntpUDP;
 // Use local offset seconds, example -5*3600 for EST. Set to your timezone.
 NTPClient timeClient(ntpUDP, "pool.ntp.org", -5 * 3600, 60000);
@@ -56,7 +56,7 @@ const char* PATH_GOSPEL    = "/audio/gospel.wav";
 const char* PATH_JAZZ      = "/audio/jazz.wav";
 const char* PATH_RNB       = "/audio/rnb.wav";
 
-// ---------------- System state ----------------
+// ---------------- System  ----------------
 enum SystemMode { MODE_NORMAL=0, MODE_EMERGENCY_AWAIT, MODE_EMERGENCY_BROADCAST };
 SystemMode systemMode = MODE_NORMAL;
 
@@ -66,7 +66,7 @@ const unsigned long EMERGENCY_TIMEOUT_MS = 60000UL; // 60 s
 bool sirenPlayed = false;
 bool emergencyLooping = false;
 
-// ---------------- Sensor thresholds (tune as needed) ----------------
+// ---------------- Sensor thresholds ----------------
 const int STRESS_HR_THRESHOLD = 100;
 const int STRESS_GSR_THRESHOLD = 2500;
 const int SPO2_THRESHOLD = 92;
@@ -296,7 +296,7 @@ void setup() {
   SPI.begin(); // default pins; library will use SD_CS
   if (!SD.begin(SD_CS)) {
     Serial.println("SD card init FAIL!");
-    // If no SD, system cannot play audio — halt to notify developer
+    // If no SD
     while (1) {
       Serial.println("Insert SD and reset.");
       delay(2000);
@@ -359,7 +359,6 @@ void loop() {
   if (SensorSerial.available()) {
     String data = SensorSerial.readStringUntil('}');
     data += "}";
-    // sanity
     if (data.length() > 4) {
       int hr   = extractValue(data, "\"hr\":");
       int spo2 = extractValue(data, "\"spo2\":");
@@ -371,6 +370,5 @@ void loop() {
     }
   }
 
-  // small delay to avoid tight busy loop
-  delay(20);
+  delay(50);
 }

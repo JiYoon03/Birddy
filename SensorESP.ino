@@ -1,11 +1,14 @@
+// Birddy — sensor data acquisition (MAX30102 + GSR) and transmission via UART to main ESP32
+// Libraries required:
+//   - MAX30105 by SparkFun 
 #include <Wire.h>
 #include "MAX30105.h"
 #include "spo2_algorithm.h"
 
 MAX30105 particleSensor;
 
+// ---------------- Configuration ----------------
 #define GSR_PIN 34
-
 #define UART_TX 4
 #define UART_RX 5
 
@@ -24,7 +27,6 @@ void setup() {
     Serial.println("MAX30102 not found!");
     while (1);
   }
-
   particleSensor.setup();
   particleSensor.setPulseAmplitudeRed(0x1F);
   particleSensor.setPulseAmplitudeIR(0x1F);
@@ -32,7 +34,6 @@ void setup() {
 
 void loop() {
 
-  // FIFO에서 데이터가 준비되었는지 반드시 확인해야 함
   if (particleSensor.check()) {
     irValue = particleSensor.getIR();
     redValue = particleSensor.getRed();
