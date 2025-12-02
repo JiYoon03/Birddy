@@ -27,7 +27,7 @@ This project reads data from a MAX30105 pulse oximeter sensor and a GSR (Galvani
 * ESP32 board package installed
 * Libraries:
 
-  * [MAX30105](https://github.com/sparkfun/MAX3010x_Sensor)
+  * MAX30105
   * `Wire` (built-in)
   * `spo2_algorithm.h` (for SPO2 calculations)
 
